@@ -5,25 +5,34 @@ import {
     Flex,
     Button,
     Stack,
-    Avatar
+    Avatar,
+    useDisclosure
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 
 import { RiVideoAddLine } from 'react-icons/ri'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { BiUserCircle } from 'react-icons/bi'
+import { Link } from 'react-router-dom'
+import LeftDrawer from '../LeftSideBar/LeftDrawer'
 
 function Navbar() {
     let CurrentUser = {
-        name: "John Doe",
-        email: "john@gmail.com"
+        result: {
+            name: "John Doe",
+            email: "john@gmail.com"
+        }
     }
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     return (
         <div className={style.NavbarContainer}>
             <Flex alignItems='center' justifyContent='space-between' paddingRight="20px">
                 <Flex alignItems='center'>
-                    <Button colorScheme="black" variant="ghost" leftIcon={<HamburgerIcon />} size="lg" />
-                    <img src={logo} alt="YouTube Logo" style={{ width: "110px" }} />
+                    <Button colorScheme="black" variant="ghost" leftIcon={<HamburgerIcon />} size="lg" onClick={onOpen}/>
+                    <LeftDrawer onClose={onClose} isOpen={isOpen} />
+                    <Link to='/'><img src={logo} alt="YouTube Logo" style={{ width: "110px" }} /></Link>
                 </Flex>
                 <Searchbar />
                 <Flex gap={6} alignItems='center'>
@@ -48,10 +57,10 @@ function Navbar() {
                     <IoMdNotificationsOutline size="30px" color='black' cursor='pointer' />
                 </Flex>
                 {CurrentUser ?
-                    (CurrentUser.name ?
-                        <Avatar name={CurrentUser.name} />
+                    (CurrentUser.result.name ?
+                        <Avatar name={CurrentUser.result.name} />
                         :
-                        <Avatar name={CurrentUser.email} />
+                        <Avatar name={CurrentUser.result.email} />
                     )
                     :
                     <Button leftIcon={<BiUserCircle size='30px' />} colorScheme="blue" variant="outline" size="md">
