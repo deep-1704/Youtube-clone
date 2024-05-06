@@ -4,6 +4,12 @@ import VideoGrid from '../../Components/VideoGrid/VideoGrid'
 
 import sampleVideo from '../../Assets/videos/sample.mov'
 
+import {
+  Button,
+  Flex,
+  Stack,
+} from '@chakra-ui/react'
+
 function Home() {
   let vids = [
     {
@@ -115,9 +121,40 @@ function Home() {
       upload_date: "04/17/2004"
     },
   ]
+
+  let navItems = [
+    "All",
+    "Gaming",
+    "Music",
+    "Movies",
+    "News",
+    "Sports",
+    "Fashion",
+    "Tech",
+    "Education",
+    "Entertainment",
+    "Comedy",
+    "Beauty",
+    "Science",
+    "Travel",
+    "Health",
+    "Food",
+    "History",
+    "Art",
+    "Fitness",
+  ]
   return (
-    <div className={style.HomeContainer}>
-      <VideoGrid videos={vids}/>
+    <div className={style.HomeContainer} style={{width:'100vw'}}>
+      <Stack marginTop={5}>
+        <Flex wrap='wrap' gap={2} position='sticky' top='60px' backgroundColor='white' paddingBottom={2}>
+          {navItems.map((item, index) => {
+            return (
+              <Button key={index} variant='solid'>{item}</Button>
+            )
+          })}
+        </Flex>
+        <VideoGrid videos={vids} />
+      </Stack>
     </div>
   )
 }

@@ -19,7 +19,7 @@ function ShowVideo({ video }) {
       <Stack>
         <video src={video.video_src} width='100%' />
         <Flex gap={4}>
-          <Avatar name={video.channel} src='https://bit.ly/broken-link' />
+          <Avatar name={video.channel} src='https://bit.ly/broken-link' zIndex={-1}/>
           <Stack gap={1}>
             <Text as='b'>{video.title}</Text>
             <Text>{video.channel}</Text>

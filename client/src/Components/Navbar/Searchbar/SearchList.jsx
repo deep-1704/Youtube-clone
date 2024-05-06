@@ -10,7 +10,7 @@ import {
 
 function SearchList({ searchList, setSearchQuery, setSearchList }) {
     return (
-        <Stack position='absolute' border="1px solid black" borderRadius="20px" zIndex={1}>
+        <Stack position='absolute' border="1px solid black" borderRadius="20px" zIndex={1} backgroundColor='white'>
             {searchList.map((item, index) => {
                 return (
                     <Button

@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 
 import UtilButtons from './UtilButtons'
+import Comments from '../../Components/Comments/Comments'
 
 function VideoPage() {
     let video = {
@@ -35,7 +36,10 @@ function VideoPage() {
                     <Flex justifyContent='space-between'>
                         <Flex alignItems='center' gap={3}>
                             <Avatar name={video.channel} src='https://bit.ly/broken-link' />
-                            <Text as='b'>{video.channel}</Text>
+                            <Stack gap={0}>
+                                <Text as='b'>{video.channel}</Text>
+                                <Text>{formatNumber(1000000)} subscribers</Text>
+                            </Stack>
                         </Flex>
                         <UtilButtons />
                     </Flex>
@@ -43,6 +47,7 @@ function VideoPage() {
                         <Text as='b'>{formatNumber(video.views)} views - {formatDays(days)} ago</Text>
                         <Text>{video.description}</Text>
                     </Stack>
+                    <Comments />
                 </Stack>
                 <Heading size='xl'>Up Next</Heading>
             </Flex>
