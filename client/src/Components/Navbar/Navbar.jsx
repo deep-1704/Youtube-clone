@@ -27,7 +27,7 @@ function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
-        <div className={style.NavbarContainer}>
+        <div className={style.NavbarContainer} style={{position:'sticky', top:'0', backgroundColor:'white'}}>
             <Flex alignItems='center' justifyContent='space-between' paddingRight="20px">
                 <Flex alignItems='center'>
                     <Button colorScheme="black" variant="ghost" leftIcon={<HamburgerIcon />} size="lg" onClick={onOpen}/>
