@@ -144,7 +144,7 @@ function Home() {
     "Fitness",
   ]
   return (
-    <div className={style.HomeContainer} style={{width:'100vw'}}>
+    <div className={style.HomeContainer} style={{width:'100vw', zIndex:'-1'}}>
       <Stack marginTop={5}>
         <Flex wrap='wrap' gap={2} position='sticky' top='60px' backgroundColor='white' paddingBottom={2}>
           {navItems.map((item, index) => {
