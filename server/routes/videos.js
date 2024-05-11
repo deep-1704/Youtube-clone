@@ -80,7 +80,7 @@ videoRouter.post('/', upload.single('userVideo'), async (req, res) => {
         0,
         0,
         new Date(),
-        req.file.originalname
+        req.file.originalname.split('.')[0]
     )
 
     await insertVideo(videoObj);
@@ -89,7 +89,8 @@ videoRouter.post('/', upload.single('userVideo'), async (req, res) => {
 
 videoRouter.get('/:videoId', (req, res) => {
     let videoId = req.params.videoId;
-    let filePath = `./uploads/${videoId}`;
+    console.log(videoId);
+    let filePath = `./uploads/${videoId}.mp4`;
 
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;

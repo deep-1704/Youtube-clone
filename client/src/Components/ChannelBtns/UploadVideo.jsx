@@ -48,6 +48,13 @@ function UploadVideo({ channel }) {
             return
         }
 
+        // limit video size to 2MB
+        if (data.userVideo.size > 2000000) {
+            alert('File size should be less than 2MB')
+            setIsLoading(false)
+            return
+        }
+
         const formData = new FormData();
 
         formData.append('videoTitle', data.videoTitle)

@@ -42,6 +42,10 @@ function VideoPage() {
     let date1 = new Date(video?.dateOfUpload)
     let date2 = new Date();
     let days = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+
+    let url = process.env.REACT_APP_API_URL
+    console.log(`${url}/${video?.originalName}`)  
+
     return (
         <div className={style.VideoPageContainer} style={{ overflowY: 'scroll', padding: '40px' }}>
             <Flex gap={7}>
@@ -50,7 +54,7 @@ function VideoPage() {
                         (
                             <Stack gap={3} width='65%'>
                                 <video ref={videoRef} controls autoPlay width='100%' >
-                                    <source src={`http://localhost:5500/video/${video?.originalName}`} type='video/mp4'></source>
+                                    <source src={`${url}/video/${video?.originalName}`} type='video/mp4'></source>
                                     Your browser does not support the video tag.
                                 </video>
                                 <Text as='b' fontSize='20px'>{video?.title}</Text>

@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   Text,
-  Button,
 } from '@chakra-ui/react'
 
 import EditBtn from './EditBtn';

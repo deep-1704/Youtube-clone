@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import style from '../style.module.css'
 import VideoGrid from '../../Components/VideoGrid/VideoGrid'
 
-import sampleVideo from '../../Assets/videos/sample.mov'
-
 import { getAllVideos } from '../../Api/api'
 
 import {
