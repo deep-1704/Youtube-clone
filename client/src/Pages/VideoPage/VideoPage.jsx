@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import style from '../style.module.css'
 
-import sample from '../../Assets/videos/sample.mov'
+import { getVideoInfoById } from '../../Api/api'
+import { useParams } from 'react-router-dom'
 
 import {
     Flex,
@@ -9,46 +10,70 @@ import {
     Text,
     Avatar,
     Heading,
+    Spinner,
 } from '@chakra-ui/react'
 
 import UtilButtons from './UtilButtons'
 import Comments from '../../Components/Comments/Comments'
 
 function VideoPage() {
-    let video = {
-        _id: 1,
-        video_src: sample,
-        title: "10 minutes to escape or the room will explode",
-        channel: "MrBeast",
-        description: "Description for video 1",
-        views: 1000000,
-        upload_date: "04/17/2004"
-    }
-    let date1 = new Date(video.upload_date)
+    let { videoId } = useParams()
+
+    let [video, setVideo] = useState(null)
+    const videoRef = useRef(null)
+
+    useEffect(() => {
+        async function fetchVideo() {
+            let response = await getVideoInfoById(videoId)
+            if (response.status === 200) {
+                setVideo(response.data)
+            } else {
+                console.log('Error:', response)
+            }
+        }
+        fetchVideo()
+        if (videoRef.current) {
+            videoRef.current.pause()
+            videoRef.current.removeAttribute('src')
+            videoRef.current.load()
+        }
+    }, [])
+
+    let date1 = new Date(video?.dateOfUpload)
     let date2 = new Date();
     let days = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
     return (
         <div className={style.VideoPageContainer} style={{ overflowY: 'scroll', padding: '40px' }}>
             <Flex gap={7}>
-                <Stack gap={3} width='65%'>
-                    <video src={video.video_src} controls autoPlay width='100%' />
-                    <Text as='b' fontSize='20px'>{video.title}</Text>
-                    <Flex justifyContent='space-between'>
-                        <Flex alignItems='center' gap={3}>
-                            <Avatar name={video.channel} src='https://bit.ly/broken-link' />
-                            <Stack gap={0}>
-                                <Text as='b'>{video.channel}</Text>
-                                <Text>{formatNumber(1000000)} subscribers</Text>
+                {
+                    video ?
+                        (
+                            <Stack gap={3} width='65%'>
+                                <video ref={videoRef} controls autoPlay width='100%' >
+                                    <source src={`http://localhost:5500/video/${video?.originalName}`} type='video/mp4'></source>
+                                    Your browser does not support the video tag.
+                                </video>
+                                <Text as='b' fontSize='20px'>{video?.title}</Text>
+                                <Flex justifyContent='space-between'>
+                                    <Flex alignItems='center' gap={3}>
+                                        <Avatar name={video?.channelName} src='https://bit.ly/broken-link' />
+                                        <Stack gap={0}>
+                                            <Text as='b'>{video?.channelName}</Text>
+                                            <Text>{formatNumber(1000000)} subscribers</Text>
+                                        </Stack>
+                                    </Flex>
+                                    <UtilButtons video={video} />
+                                </Flex>
+                                <Stack backgroundColor='#f2f2f2' padding={3} borderRadius={10}>
+                                    <Text as='b'>{formatNumber(video?.viewCount)} views - {formatDays(days)} ago</Text>
+                                    <Text>{video?.description}</Text>
+                                </Stack>
+                                <Comments video={video} />
                             </Stack>
-                        </Flex>
-                        <UtilButtons />
-                    </Flex>
-                    <Stack backgroundColor='#f2f2f2' padding={3} borderRadius={10}>
-                        <Text as='b'>{formatNumber(video.views)} views - {formatDays(days)} ago</Text>
-                        <Text>{video.description}</Text>
-                    </Stack>
-                    <Comments />
-                </Stack>
+                        )
+                        :
+                        <Spinner />
+                }
                 <Heading size='xl'>Up Next</Heading>
             </Flex>
         </div>

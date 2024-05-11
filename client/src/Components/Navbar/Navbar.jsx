@@ -25,14 +25,15 @@ import { userLogin } from '../../Api/api'
 function Navbar() {
 
     let token = localStorage.getItem('token')
-    let decoded = jwtDecode(token)
+    let decoded;
+    if(token) decoded = jwtDecode(token)
 
     let [currentUser, setCurrentUser] = useState({
-        email: decoded.email,
-        first_name: decoded.given_name,
-        last_name: decoded.family_name,
-        name: decoded.name,
-        picture: decoded.picture,
+        email: decoded?.email,
+        first_name: decoded?.given_name,
+        last_name: decoded?.family_name,
+        name: decoded?.name,
+        picture: decoded?.picture,
     })
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -40,35 +41,27 @@ function Navbar() {
         localStorage.setItem('token', response.credential)
 
         const decoded = jwtDecode(response.credential);
-        setCurrentUser({
-            email: decoded?.email,
-            first_name: decoded?.given_name,
-            last_name: decoded?.family_name,
-            name: decoded?.name,
-            picture: decoded?.picture,
-        })
 
-        userLogin(response.credential).then((responseStatus) => {
-            console.log(responseStatus)
-            if (responseStatus.status === 200) {
-                const decoded = jwtDecode(response.credential);
-                setCurrentUser({
-                    email: decoded.email,
-                    first_name: decoded.given_name,
-                    last_name: decoded.family_name,
-                    name: decoded.name,
-                    picture: decoded.picture,
-                })
-            } else {
-                console.log(responseStatus.status)
-                alert('Login Failed')
-            }
-        })
+        let loginResponse = await userLogin(response.credential)
+
+        if(loginResponse.status === 201){
+            localStorage.setItem('user_id', loginResponse?.data)
+            setCurrentUser({
+                email: decoded?.email,
+                first_name: decoded?.given_name,
+                last_name: decoded?.family_name,
+                name: decoded?.name,
+                picture: decoded?.picture,
+            })
+            alert('Login Successful')
+        }else{
+            alert('Login Failed')
+        }
+
     }
 
     function onFailure(response) {
         console.log(response)
-        alert('Login Failed')
     }
 
     return (
@@ -103,14 +96,14 @@ function Navbar() {
                     </Stack>
                     <IoMdNotificationsOutline size="30px" color='black' cursor='pointer' />
                 </Flex>
-                {currentUser ?
+                {(currentUser.name || currentUser.email) ?
                     (currentUser.name ?
-                        <ProfileDropdown name={currentUser.name} src={currentUser.picture} cid='me' />
+                        <ProfileDropdown name={currentUser.name} src={currentUser.picture} />
                         :
-                        <ProfileDropdown name={currentUser.email} src={currentUser.picture} cid='me' />
+                        <ProfileDropdown name={currentUser.email} src={currentUser.picture} />
                     )
                     :
-                    <GoogleLogin onSuccess={(response) => onSuccess(response)} onError={(response) => onFailure(response)} />
+                    <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
                 }
             </Flex>
         </div>

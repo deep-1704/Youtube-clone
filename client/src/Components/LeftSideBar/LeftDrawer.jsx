@@ -35,22 +35,18 @@ function LeftDrawer({ onClose, isOpen }) {
                                 </Flex>
                             </Button>
                         </NavLink>
-                        <NavLink to='/explore'>
-                            <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
-                                <Flex alignItems='center' gap={4} cursor='pointer' >
-                                    <MdOutlineExplore size="27" />
-                                    <Text fontSize="15px">Explore</Text>
-                                </Flex>
-                            </Button>
-                        </NavLink>
-                        <NavLink to='/subscriptions'>
-                            <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
-                                <Flex alignItems='center' gap={4} cursor='pointer' >
-                                    <MdOutlineSubscriptions size="27" />
-                                    <Text fontSize="15px">Subscriptions</Text>
-                                </Flex>
-                            </Button>
-                        </NavLink>
+                        <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
+                            <Flex alignItems='center' gap={4} cursor='pointer' >
+                                <MdOutlineExplore size="27" />
+                                <Text fontSize="15px">Explore</Text>
+                            </Flex>
+                        </Button>
+                        <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
+                            <Flex alignItems='center' gap={4} cursor='pointer' >
+                                <MdOutlineSubscriptions size="27" />
+                                <Text fontSize="15px">Subscriptions</Text>
+                            </Flex>
+                        </Button>
                         <Divider />
                         <NavLink to='/library'>
                             <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
@@ -98,14 +94,12 @@ function LeftDrawer({ onClose, isOpen }) {
                             {
                                 subscriptions.map((subscription, index) => {
                                     return (
-                                        <NavLink to='/subscriptions' key={index}>
-                                            <Button variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
-                                                <Flex alignItems='center' gap={4} cursor='pointer' >
-                                                    <Avatar name={subscription} size='sm' />
-                                                    <Text fontSize="15px">{subscription}</Text>
-                                                </Flex>
-                                            </Button>
-                                        </NavLink>
+                                        <Button key={index} variant='ghost' justifyContent='left' height='fit-content' width='100%' paddingTop='10px' paddingBottom='10px' onClick={() => onClose()}>
+                                            <Flex alignItems='center' gap={4} cursor='pointer' >
+                                                <Avatar name={subscription} size='sm' />
+                                                <Text fontSize="15px">{subscription}</Text>
+                                            </Flex>
+                                        </Button>
                                     )
                                 })
                             }

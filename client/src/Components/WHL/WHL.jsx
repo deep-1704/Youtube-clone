@@ -16,15 +16,15 @@ function WHL({ purpose, videoList }) {
                 <Stack>
                     {videoList.map((video) => {
                         return (
-                            <Flex key={video._id} padding='10px' gap={4}>
-                                <video src={video.video_src} controls style={{ width: "300px", height: "200px" }} />
+                            <Flex key={video._id} padding='10px' gap={4} cursor='pointer' onClick={() => window.location.href = `/videoPage/${video._id}`}>
+                                <Text width='300px' height='200px' display='flex' alignItems='center' justifyContent='center' fontSize='5xl' backgroundColor='grey'>Thumbnail</Text>
                                 <Stack marginTop={3}>
                                     <Heading size="md">{video.title}</Heading>
                                     <Flex gap={3}>
-                                        <Text as='b'>{video.channel}</Text>
-                                        <Text>{formatNumber(video.views)} views</Text>
+                                        <Text as='b'>{video.channelName}</Text>
+                                        <Text>{formatNumber(video.viewCount)} views</Text>
                                     </Flex>
-                                    <Text>{formatDays(Math.floor(((new Date()) - (new Date(video.upload_date))) / (1000 * 60 * 60 * 24)))} ago</Text>
+                                    <Text>{formatDays(Math.floor(((new Date()) - (new Date(video.dateOfUpload))) / (1000 * 60 * 60 * 24)))} ago</Text>
                                 </Stack>
                             </Flex>
                         )

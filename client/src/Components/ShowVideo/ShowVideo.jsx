@@ -11,19 +11,19 @@ import {
 import { Link } from 'react-router-dom'
 
 function ShowVideo({ video }) {
-  let date1 = new Date(video.upload_date)
+  let date1 = new Date(video.dateOfUpload)
   let date2 = new Date();
   let days = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
   return (
     <Link to={`/videoPage/${video._id}`} className={style.VideoContainer} style={{width:"370px"}}>
       <Stack>
-        <video src={video.video_src} width='100%' />
+        <Text width='100%' height={200} display='flex' alignItems='center' justifyContent='center' fontSize='5xl' backgroundColor='grey'>Thumbnail</Text>
         <Flex gap={4}>
-          <Avatar name={video.channel} src='https://bit.ly/broken-link' zIndex={-1}/>
+          <Avatar name={video.channelName} src='https://bit.ly/broken-link' zIndex={-1}/>
           <Stack gap={1}>
             <Text as='b'>{video.title}</Text>
-            <Text>{video.channel}</Text>
-            <Text>{formatNumber(video.views)} views - {formatDays(days)} ago</Text>
+            <Text>{video.channelName}</Text>
+            <Text>{formatNumber(video.viewCount)} views - {formatDays(days)} ago</Text>
           </Stack>
         </Flex>
       </Stack>
@@ -32,7 +32,7 @@ function ShowVideo({ video }) {
 }
 
 function formatNumber(number) {
-  return number.toLocaleString('en-US', {
+  return number?.toLocaleString('en-US', {
     maximumFractionDigits: 2,
     notation: 'compact',
     compactDisplay: 'short'

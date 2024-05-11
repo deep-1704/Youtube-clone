@@ -10,7 +10,7 @@ function VideoGrid({ videos }) {
   return (
     <div className={style.VideoGridContainer}>
       <Flex wrap='wrap' justifyContent='space-around' gap={4} padding={7}>
-        {videos.map((video) => {
+        {videos?.map((video) => {
           return (
             <ShowVideo key={video._id} video={video} />
           )

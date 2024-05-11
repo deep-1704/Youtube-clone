@@ -22,6 +22,7 @@ function SearchList({ searchList, setSearchQuery, setSearchList }) {
                         onClick={(e) => {
                             setSearchQuery(item)
                             setSearchList(false)
+                            window.location.href = '/search/' + item
                         }}>
                         {item}
                     </Button>

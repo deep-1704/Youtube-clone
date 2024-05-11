@@ -1,22 +1,24 @@
 class video {
     constructor(
         _id,
-        channelId,
+        channelName,
         title,
         description,
         likeCount,
         viewCount,
         commentCount,
         dateOfUpload,
+        originalName,
     ){
         this._id = _id;
-        this.channelId = channelId;
+        this.channelName = channelName;
         this.title = title;
         this.description = description;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
         this.commentCount = commentCount;
         this.dateOfUpload = dateOfUpload;
+        this.originalName = originalName;
     }
 }
 
@@ -68,6 +70,8 @@ class comment{
     constructor(
         _id,
         userId,
+        firstName,
+        lastName,
         videoId,
         comment,
     ){
@@ -75,6 +79,8 @@ class comment{
         this.userId = userId;
         this.videoId = videoId;
         this.comment = comment;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }
 

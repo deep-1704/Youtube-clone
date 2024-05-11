@@ -23,22 +23,18 @@ function LeftsideBar() {
                         </Stack>
                     </Button>
                 </NavLink>
-                <NavLink to='/explore'>
-                    <Button variant='ghost' height='fit-content' width='fit-content' paddingTop='10px' paddingBottom='10px'>
-                        <Stack alignItems='center' cursor='pointer' >
-                            <MdOutlineExplore size="27" />
-                            <Text fontSize="12px">Explore</Text>
-                        </Stack>
-                    </Button>
-                </NavLink>
-                <NavLink to='/subscriptions'>
-                    <Button variant='ghost' height='fit-content' width='fit-content' paddingTop='10px' paddingBottom='10px'>
-                        <Stack alignItems='center' cursor='pointer' >
-                            <MdOutlineSubscriptions size="27" />
-                            <Text fontSize="10px">Subscriptions</Text>
-                        </Stack>
-                    </Button>
-                </NavLink>
+                <Button variant='ghost' height='fit-content' width='fit-content' paddingTop='10px' paddingBottom='10px'>
+                    <Stack alignItems='center' cursor='pointer' >
+                        <MdOutlineExplore size="27" />
+                        <Text fontSize="12px">Explore</Text>
+                    </Stack>
+                </Button>
+                <Button variant='ghost' height='fit-content' width='fit-content' paddingTop='10px' paddingBottom='10px'>
+                    <Stack alignItems='center' cursor='pointer' >
+                        <MdOutlineSubscriptions size="27" />
+                        <Text fontSize="10px">Subscriptions</Text>
+                    </Stack>
+                </Button>
                 <NavLink to='/library'>
                     <Button variant='ghost' height='fit-content' width='fit-content' paddingTop='10px' paddingBottom='10px'>
                         <Stack alignItems='center' cursor='pointer' >

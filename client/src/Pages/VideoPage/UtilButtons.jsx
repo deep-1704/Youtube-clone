@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { BsThreeDots } from 'react-icons/bs'
 import { MdPlaylistAddCheck } from 'react-icons/md'
 import { RiPlayListAddFill, RiHeartAddFill, RiShareForwardLine, RiHeartAddLine } from 'react-icons/ri'
 import { AiOutlineDislike, AiFillDislike, AiOutlineLike, AiFillLike } from 'react-icons/ai'
+
+import { getUserTags, postUserTag, deleteUserTag } from '../../Api/api'
 
 import style from '../style.module.css'
 
@@ -12,24 +14,100 @@ import {
     Button,
 } from '@chakra-ui/react'
 
-function UtilButtons() {
+function UtilButtons({ video }) {
+    let userId = localStorage.getItem('user_id')
+    let token = localStorage.getItem('token')
+
     let [saveVideo, setSaveVideo] = useState(false)
     let [disLikeBtn, setDislikeBtn] = useState(false)
     let [likeBtn, setLikeBtn] = useState(false)
     let [thanks, setThanks] = useState(false)
+    let [likeCount, setLikeCount] = useState(video.likeCount)
 
-    let likeCount = 100
+    let [likeLoading, setLikeLoading] = useState(false)
+    let [saveVidLoading, setSaveVidLoading] = useState(false)
 
-    function toggleSaveVideo() {
-        setSaveVideo(!saveVideo)
+
+    useEffect(() => {
+        async function fetchTags() {
+            let response = await getUserTags(token, userId, video._id)
+            if (response.status === 200) {
+                let tags = response.data
+                if (tags.includes('lk')) {
+                    setLikeBtn(true)
+                }
+                if (tags.includes('wl')) {
+                    setSaveVideo(true)
+                }
+                if (!(tags.includes('hs'))) {
+                    let _response = await postUserTag(token, userId, video._id, 'hs')
+                    if (_response.status === 401) {
+                        console.log('Unauthorized to save history')
+                    } else if (_response.status === 201) {
+                        console.log('History saved')
+                    } else {
+                        console.log('Error saving history')
+                    }
+                }
+            } else {
+                console.log('Error fetching tags')
+            }
+        }
+        fetchTags()
+    }, [])
+
+    async function handleSaveVideo() {
+        setSaveVidLoading(true)
+        if (saveVideo === false) {
+            let response = await postUserTag(token, userId, video._id, 'wl')
+            if (response.status === 201) {
+                setSaveVideo(true)
+            } else if (response.status === 401) {
+                alert('Unauthorized')
+            } else {
+                alert('Error saving video')
+            }
+        } else {
+            let response = await deleteUserTag(token, userId, video._id, 'wl')
+            if (response.status === 204) {
+                setSaveVideo(false)
+            } else if (response.status === 401) {
+                alert('Unauthorized')
+            } else {
+                alert('Error saving video')
+            }
+        }
+        setSaveVidLoading(false)
     }
     function toggleDislikeBtn() {
         setDislikeBtn(!disLikeBtn)
     }
-    function toggleLikeBtn() {
-        setLikeBtn(!likeBtn)
+    async function handleLikeBtn() {
+        setLikeLoading(true)
+        if (likeBtn === false) {
+            let response = await postUserTag(token, userId, video._id, 'lk')
+            if (response.status === 201) {
+                setLikeCount(likeCount + 1)
+                setLikeBtn(true)
+            } else if (response.status === 401) {
+                alert('Unauthorized')
+            } else {
+                alert('Error liking video')
+            }
+        }else{
+            let response = await deleteUserTag(token, userId, video._id, 'lk')
+            if (response.status === 204) {
+                setLikeCount(likeCount - 1)
+                setLikeBtn(false)
+            } else if (response.status === 401) {
+                alert('Unauthorized')
+            } else {
+                alert('Error liking video')
+            }
+        }
+        setLikeLoading(false)
     }
-    function toggleThanks(){
+    function toggleThanks() {
         setThanks(!thanks)
     }
     return (
@@ -37,8 +115,9 @@ function UtilButtons() {
             <Flex>
                 <Button
                     leftIcon={likeBtn ? <AiFillLike size={20} /> : <AiOutlineLike size={20} />}
-                    onClick={() => toggleLikeBtn()}
-                    variant='ghost'>
+                    onClick={() => handleLikeBtn()}
+                    variant='ghost'
+                    isLoading={likeLoading}>
                     {formatNumber(likeCount)}
                 </Button>
                 <Button
@@ -48,8 +127,9 @@ function UtilButtons() {
                 </Button>
                 <Button
                     leftIcon={saveVideo ? <MdPlaylistAddCheck size={20} /> : <RiPlayListAddFill size={20} />}
-                    onClick={() => toggleSaveVideo()}
-                    variant='ghost'>
+                    onClick={() => handleSaveVideo()}
+                    variant='ghost'
+                    isLoading={saveVidLoading}>
                     Save
                 </Button>
                 <Button
